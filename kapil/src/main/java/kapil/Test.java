@@ -1,11 +1,16 @@
 package kapil;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class Test {
 
@@ -13,13 +18,21 @@ public class Test {
 
 		// Launch the Browser
 		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver_win32/chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
+
+		// Disable Notifications
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
+
+		WebDriver driver = new ChromeDriver(options);
 
 		// Window maximize
 		driver.manage().window().maximize();
 
 		// Open URL
 		driver.get("https://www.moneycorp.com/en-gb/");
+
+		// Accept cookies
+		//driver.findElement(By.cssSelector("button#onetrust-accept-btn-handler")).click();
 
 		// Change Language and region
 		WebElement languageList = driver.findElement(By.id("language-dropdown-flag"));
@@ -35,7 +48,6 @@ public class Test {
 		if (!driver.getCurrentUrl().equalsIgnoreCase(foreignExchangeSolutionsURL)) {
 			driver.close();
 		}
-
 		driver.findElement(By.xpath("/html/body/section/div[1]/header/div[2]/div/div[3]/button[1]")).click();
 
 		// International payments searching
@@ -48,5 +60,7 @@ public class Test {
 		if (!driver.getCurrentUrl().equalsIgnoreCase(internationalPaymentsURL)) {
 			driver.close();
 		}
+		// Validate the Links
+		System.out.println(driver.findElements(By.tagName("a")).size());
 	}
 }
