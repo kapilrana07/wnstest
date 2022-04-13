@@ -2,7 +2,8 @@ package kapil;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.List;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -60,7 +61,19 @@ public class Test {
 		if (!driver.getCurrentUrl().equalsIgnoreCase(internationalPaymentsURL)) {
 			driver.close();
 		}
-		// Validate the Links
-		System.out.println(driver.findElements(By.tagName("a")).size());
+		
+		// Get all the links which started from "https://www.moneycorp.com/en-us/"
+		List<WebElement> filteredTagList = driver.findElements(By.tagName("a")).stream()
+				.filter(list -> list.getAttribute("href").contains("https://www.moneycorp.com/en-us/")).collect(Collectors.toList());
+		
+		//Print the count of filtered links
+		System.out.println("Total links are:" + filteredTagList.size());	
+		
+		//Print the displayed text in web page and it's href link
+		for (WebElement element : filteredTagList) {
+			System.out.println(
+					"Webpage Text: " + element.getText() + " and href link: " + element.getAttribute("href"));
+		}
+		driver.close();
 	}
 }
